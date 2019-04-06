@@ -1,0 +1,11 @@
+flask
+flask-sqlalchemy
+flask-security
+flask-wtf
+flask-nav
+flask-bootstrap
+dynaconf
+marshmallow-sqlalchemy
+flask-restplus
+flask-marshmallow
+

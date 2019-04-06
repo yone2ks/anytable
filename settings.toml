@@ -1,0 +1,14 @@
+[default]
+DEBUG = true
+DATABASE = '/tmp/test.db'
+SECRET_KEY = 'secret key'
+SECURITY_REGISTERABLE = true
+SECURITY_PASSWORD_SALT = 'salt'
+SECURITY_SEND_REGISTER_EMAIL = false
+SQLALCHEMY_DATABASE_URI = 'sqlite://///tmp/test.db' 
+PER_PAGE = 30
+
+[development]
+
+
+[production]
