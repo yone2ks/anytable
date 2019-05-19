@@ -1,6 +1,6 @@
-from app.extensions import db
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from datetime import datetime
+from anytable.extensions import db
 
 class Base(db.Model):
     __abstract__ = True

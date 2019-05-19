@@ -1,4 +1,4 @@
-from app.blueprints import bp_factory
+from anytable.blueprints import bp_factory
 from flask import request, redirect, url_for, render_template, flash, session
 
 

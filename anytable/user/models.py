@@ -1,4 +1,4 @@
-from app.extensions import db
+from anytable.extensions import db
 from flask_security import UserMixin, RoleMixin
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship, backref
