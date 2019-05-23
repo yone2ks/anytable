@@ -5,6 +5,7 @@ from dynaconf import settings
 from anytable.extensions import ma, api, db
 from anytable.blueprints import bp_factory
 from .models import AnyTable
+from .forms import AnyTableForm
 
 anytable_bp = bp_factory('anytable')
 
@@ -16,4 +17,9 @@ def index():
 
 @anytable_bp.route('/new')
 def new():
+    form = AnyTableForm()
+    return render_template('anytable/new.html', form=form)
+
+@anytable_bp.route('/create', methods=['POST'])
+def create():
     return 
