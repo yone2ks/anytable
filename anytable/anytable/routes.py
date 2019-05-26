@@ -15,6 +15,11 @@ def index():
     anytables = AnyTable.query.paginate(page, settings.PER_PAGE)
     return render_template('anytable/index.html', anytables=anytables)
 
+@anytable_bp.route('/<id>')
+def show(id):
+    anytable = AnyTable.query.get(id)
+    return render_template('anytable/show.html', anytable=anytable)
+
 @anytable_bp.route('/new')
 def new():
     form = AnyTableForm()
@@ -22,4 +27,17 @@ def new():
 
 @anytable_bp.route('/create', methods=['POST'])
 def create():
-    return 
+    table_name = request.form['table_name']
+    description = request.form['description']
+    fields = []
+    print(request.form)
+    for var_org in range(int(request.form['field_num'])):
+        var = var_org + 1
+        fields.append({"name": request.form['field'+str(var)+'_name'], "type": request.form['field'+str(var)+'_type'], "unique": "true" if request.form.get('field'+str(var)+'_unique')=="1" else "false", "nullable": "true" if request.form.get('field'+str(var)+'_nullable')=="1" else "false"})
+    table_schema = {"table_name": table_name, "description": description, "fields": fields}
+    anytable = AnyTable(table_name=table_name, description=description, table_schema = json.dumps(table_schema))
+    db.session.add(anytable)
+    db.session.commit()
+    return redirect(url_for('anytable.index'))
+
+

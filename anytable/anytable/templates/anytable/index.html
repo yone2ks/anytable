@@ -27,6 +27,11 @@
                 <td>{{ anytable.table_name }}</td>
                 <td>{{ anytable.description }}</td>
                 <td>
+                    <div class="btn-toolbar">
+                        <div class="btn-group mr-2">
+                            <button class="btn btn-sm btn-primary" type="button" onclick="location.href='anytable/{{anytable.id}}'">Show</button>
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
