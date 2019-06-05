@@ -2,6 +2,7 @@ import json
 from flask import jsonify, request, current_app, redirect, url_for, render_template, flash, session
 from flask_restplus import Resource, Namespace
 from dynaconf import settings
+from inflector import Inflector
 from anytable.extensions import ma, api, db
 from anytable.blueprints import bp_factory
 from .models import AnyTable
@@ -15,7 +16,7 @@ def index():
     anytables = AnyTable.query.paginate(page, settings.PER_PAGE)
     return render_template('anytable/index.html', anytables=anytables)
 
-@anytable_bp.route('/<id>')
+@anytable_bp.route('/<int:id>')
 def show(id):
     anytable = AnyTable.query.get(id)
     return render_template('anytable/show.html', anytable=anytable)
@@ -39,5 +40,38 @@ def create():
     db.session.add(anytable)
     db.session.commit()
     return redirect(url_for('anytable.index'))
+
+@anytable_bp.route('/<string:cls>')
+def cls_index(cls):
+    cls_index = list(map(lambda item: item.__dict__, AnyTable.models[cls].query.all()))
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
+    return render_template('anytable/common_index.html', cls_index=cls_index, fields=fields)
+
+@anytable_bp.route('/<string:cls>/new')
+def cls_new(cls):
+    form = AnyTable.forms[cls]()
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
+    return render_template('anytable/common_new.html', form=form, fields=fields, cls=cls)
+
+@anytable_bp.route('/<string:cls>/create', methods=['POST'])
+def cls_create(cls):
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
+    params = dict((field, request.form[field]) for field in fields)
+    record = AnyTable.models[cls](**params)
+    db.session.add(record)
+    db.session.commit()
+    return redirect(url_for('anytable.cls_index', cls=cls))
+
+@anytable_bp.route('/<string:cls>/<int:id>')
+def cls_show(cls, id):
+    record = AnyTable.models[cls].query.get(id)
+    return render_template('anytable/common_show.html', record=record, cls=cls)
+
+@anytable_bp.route('/<string:cls>/<int:id>/delete')
+def cls_delete(cls, id):
+    record = AnyTable.models[cls].query.get(id)
+    db.session.delete(record)
+    db.session.commit()
+    return redirect(url_for('anytable.cls_index', cls=cls))
 
 

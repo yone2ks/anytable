@@ -1,0 +1,50 @@
+{% extends "base_template.html" %}
+
+{% block title %}Anytable{% endblock title %}
+{% block stylesheet %}
+{{ super() }}
+{% endblock stylesheet %}
+
+    {% block main %}
+    <div class="card">
+        <div class="card-header">
+            Anytables
+        </div>
+        <div class="card-body">
+    <table class="table table-responsive-sm table-hover table-outline table-striped table-bordered mb-0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                {% for field in fields %}
+                <th>{{ field }}</th>
+                {% endfor %}
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cls_index %}
+            <tr>
+                <td>{{ item["id"] }}</td>
+                {% for field in fields %}
+                <td>{{ item[field] }}</td>
+                {% endfor %}
+                <td>{{ item["created_at"] }}</td>
+                <td>{{ item["updated_at"] }}</td>
+                <td>
+                    <div class="btn-toolbar">
+                        <div class="btn-group mr-2">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" type="button" onclick="location.href='{{ url_for('anytable.new') }}'">New Anytable</button>
+        </div>
+    </div>
+{% endblock main %}
