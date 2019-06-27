@@ -1,4 +1,4 @@
-{% extends "anytable/index.html" %}
+{% extends "base_template.html" %}
 {% block main %}
 <div class="card">
     <div class="card-header">
@@ -25,6 +25,9 @@
             </tr>
         </tbody>
     </table>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-sm btn-primary" type="button" onclick="location.href='{{ url_for('anytable.cls_index', cls=anytable.table_name ) }}'">Index {{ anytable.table_name }}</button>
     </div>
 </div>
 {% endblock main %}

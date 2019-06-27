@@ -45,7 +45,7 @@ def create():
 def cls_index(cls):
     cls_index = list(map(lambda item: item.__dict__, AnyTable.models[cls].query.all()))
     fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
-    return render_template('anytable/common_index.html', cls_index=cls_index, fields=fields)
+    return render_template('anytable/common_index.html', cls_index=cls_index, fields=fields, cls=cls)
 
 @anytable_bp.route('/<string:cls>/new')
 def cls_new(cls):

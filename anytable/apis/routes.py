@@ -25,7 +25,7 @@ class AnyTablesResource(Resource):
 
     def post(self):
         table_schema = request.get_json()
-        table_name = table_schema['table']
+        table_name = table_schema['table_name']
         description = table_schema['description']
         anytable = AnyTable(table_name=table_name, description=description, table_schema = json.dumps(table_schema))
         db.session.add(anytable)

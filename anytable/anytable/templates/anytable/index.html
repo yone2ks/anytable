@@ -5,7 +5,17 @@
 {{ super() }}
 {% endblock stylesheet %}
 
-    {% block main %}
+{% block sidebar_nav %}
+{% for anytable in anytables.items %}
+<li class="nav-item">
+    <a class="nav-link active" href="/{{ anytable.table_name }}">
+        {{ anytable.table_name }}
+    </a>
+</li>
+{% endfor %}
+{% endblock sidebar_nav %}
+
+{% block main %}
     <div class="card">
         <div class="card-header">
             Anytables

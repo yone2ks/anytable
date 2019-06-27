@@ -8,7 +8,7 @@
     {% block main %}
     <div class="card">
         <div class="card-header">
-            Anytables
+            {{ cls }}
         </div>
         <div class="card-body">
     <table class="table table-responsive-sm table-hover table-outline table-striped table-bordered mb-0">
@@ -44,7 +44,7 @@
     </table>
         </div>
         <div class="card-footer">
-            <button class="btn btn-sm btn-primary" type="button" onclick="location.href='{{ url_for('anytable.new') }}'">New Anytable</button>
+            <button class="btn btn-sm btn-primary" type="button" onclick="location.href='{{ url_for('anytable.cls_new', cls=cls ) }}'">New {{ cls }}</button>
         </div>
     </div>
 {% endblock main %}

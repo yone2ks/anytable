@@ -3,6 +3,7 @@ import locale
 import sqlite3
 import json
 from flask import Flask
+from sqlalchemy import exc
 from flask_security import Security, login_required, SQLAlchemySessionUserDatastore
 from dynaconf import FlaskDynaconf
 import anytable as app_root
@@ -12,6 +13,7 @@ from .base.routes import base_bp
 from .apis.routes import api_bp, anytable_ns
 from .anytable.routes import anytable_bp
 from .anytable.models import AnyTable
+
 
 APP_ROOT_FOLDER = os.path.abspath(os.path.dirname(app_root.__file__))
 TEMPLATE_FOLDER = os.path.join(APP_ROOT_FOLDER, 'templates')
@@ -31,12 +33,14 @@ app.register_blueprint(anytable_bp)
 
 api.add_namespace(anytable_ns)
 
-with app.app_context():
-    for anytable in AnyTable.query.all():
-        anytable.add_table()
-
-# Create a user to test with
 @app.before_first_request
 def create_db():
     db.create_all()
+
+try:
+    with app.app_context():
+        for anytable in AnyTable.query.all():
+            anytable.add_table()
+except (exc.OperationalError, exc.ArgumentError) as e:
+    print(e)
 

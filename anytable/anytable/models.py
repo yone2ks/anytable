@@ -1,11 +1,13 @@
 import json
+from distutils.util import strtobool
 from flask import jsonify, request, current_app
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship, backref
 from flask_restplus import Resource, Namespace
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, Required
+from wtforms.validators import DataRequired
+from wtforms_alchemy import Unique
 from inflector import Inflector
 from anytable.extensions import api, ma, db
 from anytable.base.models import Base
@@ -45,29 +47,29 @@ class AnyTable(Base):
         self.forms[self.table_name] = self._add_form(table_schema)
 
     def _add_model(self, table_schema):
-        return type(Inflector().classify(table_schema['table']), (Base, ), self._gen_model_dict(table_schema))
+        return type(Inflector().classify(table_schema['table_name']), (Base, ), self._gen_model_dict(table_schema))
 
     def _gen_model_dict(self, table_schema):
         dic = {}
-        dic['__tablename__'] = table_schema['table']
+        dic['__tablename__'] = table_schema['table_name']
         dic['id'] = Column(Integer, primary_key=True, autoincrement=True)
         for field in table_schema['fields']:
-            dic[field['name']] = Column(self.TYPE_DICT[field['type']], unique=field['unique'], nullable=field['nullable'])
+            dic[field['name']] = Column(self.TYPE_DICT[field['type']], unique=strtobool(field['unique']), nullable=strtobool(field['nullable']))
         return dic
 
     def _add_form(self, table_schema):
-        return type(Inflector().classify(table_schema['table']) + "Form", (FlaskForm, ), self._gen_form_dict(table_schema))
+        return type(Inflector().classify(table_schema['table_name']) + "Form", (FlaskForm, ), self._gen_form_dict(table_schema))
 
     def _gen_form_dict(self, table_schema):
         dic = {}
         for field in table_schema['fields']:
             validators = []
             if field['unique'] == "true":
-                validators.append(Unique(getattr(self.models[table_schema['table']], field['name'])))
+                validators.append(Unique(getattr(self.models[table_schema['table_name']], field['name'])))
             if field['nullable'] == "true":
-                validators.append(Require())
+                validators.append(DataRequired())
             dic[field['name']] = StringField(field['name'])
-        dic['submit'] = SubmitField('Add' + table_schema['table'])
+        dic['submit'] = SubmitField('Add ' + table_schema['table_name'])
         dic['reset'] = SubmitField('Reset')
         return dic
 

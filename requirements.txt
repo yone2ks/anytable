@@ -8,4 +8,4 @@ dynaconf
 marshmallow-sqlalchemy
 flask-restplus
 flask-marshmallow
-
+WTForms-Alchemy

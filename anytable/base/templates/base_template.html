@@ -51,8 +51,8 @@
               <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                   <span class="navbar-toggler-icon"></span>
               </button>
-              <a class="navbar-brand" href="/node">
-                  <img class="navbar-brand-full" src="{{ url_for('base.static', filename='img/brand/logo.png' )}}" width="100" height="32" alt="NetEye Logo">
+              <a class="navbar-brand" href="/anytable">
+                  <img class="navbar-brand-full" src="{{ url_for('base.static', filename='img/brand/logo.png' )}}" width="120" height="120" alt="Anytable Logo">
                   <img class="navbar-brand-minimized" src="{{ url_for('base.static', filename='img/brand/logo.png' )}}" width="30" height="30" alt="NetEye Logo">
               </a>
               <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
@@ -68,17 +68,7 @@
               <div class="sidebar">
           <nav class="sidebar-nav">
             <ul class="nav">
-                {% block sidebar_nav %}
-                <li class="nav-item">
-                    <a class="nav-link active" href="/node">
-                        Node
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="/interface">
-                        Interface
-                    </a>
-                </li>
+              {% block sidebar_nav %}
               {% endblock sidebar_nav %}
             </ul>
           </nav>
