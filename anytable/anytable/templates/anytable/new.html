@@ -1,4 +1,14 @@
 {% extends "base_template.html" %}
+{% block sidebar_nav %}
+{% for anytable in anytables %}
+<li class="nav-item">
+    <a class="nav-link active" href="/anytable/{{ anytable.table_name }}">
+        {{ anytable.table_name }}
+    </a>
+</li>
+{% endfor %}
+{% endblock sidebar_nav %}
+
 {% block javascript %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>

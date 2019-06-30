@@ -19,12 +19,14 @@ def index():
 @anytable_bp.route('/<int:id>')
 def show(id):
     anytable = AnyTable.query.get(id)
-    return render_template('anytable/show.html', anytable=anytable)
+    anytables = AnyTable.query.all()
+    return render_template('anytable/show.html', anytable=anytable, anytables=anytables)
 
 @anytable_bp.route('/new')
 def new():
     form = AnyTableForm()
-    return render_template('anytable/new.html', form=form)
+    anytables = AnyTable.query.all()
+    return render_template('anytable/new.html', form=form, anytables=anytables)
 
 @anytable_bp.route('/create', methods=['POST'])
 def create():

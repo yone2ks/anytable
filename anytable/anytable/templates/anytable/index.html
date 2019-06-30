@@ -8,7 +8,7 @@
 {% block sidebar_nav %}
 {% for anytable in anytables.items %}
 <li class="nav-item">
-    <a class="nav-link active" href="/{{ anytable.table_name }}">
+    <a class="nav-link active" href="/anytable/{{ anytable.table_name }}">
         {{ anytable.table_name }}
     </a>
 </li>
