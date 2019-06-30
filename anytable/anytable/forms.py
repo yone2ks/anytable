@@ -6,5 +6,5 @@ class AnyTableForm(FlaskForm):
     table_name = StringField('table name:', validators=[Required()])
     description = StringField('description:')
     table_schema = StringField('table schema:', validators=[Required()])
-    submit = SubmitField('Add Node')
+    submit = SubmitField('Add Table')
     reset = SubmitField('Reset')
