@@ -1,6 +1,15 @@
 {% extends "base_template.html" %}
 
 {% block title %}Anytable{% endblock title %}
+{% block sidebar_nav %}
+{% for anytable in anytables %}
+<li class="nav-item">
+    <a class="nav-link active" href="/anytable/{{ anytable.table_name }}">
+        {{ anytable.table_name }}
+    </a>
+</li>
+{% endfor %}
+{% endblock sidebar_nav %}
 {% block stylesheet %}
 {{ super() }}
 {% endblock stylesheet %}

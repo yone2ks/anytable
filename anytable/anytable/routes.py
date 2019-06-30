@@ -47,13 +47,15 @@ def create():
 def cls_index(cls):
     cls_index = list(map(lambda item: item.__dict__, AnyTable.models[cls].query.all()))
     fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
-    return render_template('anytable/common_index.html', cls_index=cls_index, fields=fields, cls=cls)
+    anytables = AnyTable.query.all()
+    return render_template('anytable/common_index.html', cls_index=cls_index, fields=fields, cls=cls, anytables=anytables)
 
 @anytable_bp.route('/<string:cls>/new')
 def cls_new(cls):
     form = AnyTable.forms[cls]()
     fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
-    return render_template('anytable/common_new.html', form=form, fields=fields, cls=cls)
+    anytables = AnyTable.query.all()
+    return render_template('anytable/common_new.html', form=form, fields=fields, cls=cls, anytables=anytables)
 
 @anytable_bp.route('/<string:cls>/create', methods=['POST'])
 def cls_create(cls):
@@ -67,7 +69,8 @@ def cls_create(cls):
 @anytable_bp.route('/<string:cls>/<int:id>')
 def cls_show(cls, id):
     record = AnyTable.models[cls].query.get(id)
-    return render_template('anytable/common_show.html', record=record, cls=cls)
+    anytables = AnyTable.query.all()
+    return render_template('anytable/common_show.html', record=record, cls=cls, anytables=anytables)
 
 @anytable_bp.route('/<string:cls>/<int:id>/delete')
 def cls_delete(cls, id):
