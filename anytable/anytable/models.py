@@ -41,8 +41,8 @@ class AnyTable(Base):
         self.models[self.table_name] = self._add_model(table_schema)
         self.schemas[self.table_name] = self._add_schema(self.models[self.table_name])
         self.schemas_for_many[self.table_name] = self._add_schema_for_many(self.models[self.table_name])
-        self.namespaces[self.table_name] = self._add_namespace(self.table_name)
-        self.resources[self.table_name] = self._add_resource(self.models[self.table_name], self.schemas_for_many[self.table_name], self.namespaces[self.table_name])
+        self.namespaces[self.table_name] = self._add_namespace('anytable/api/' + self.table_name)
+        self.resources[self.table_name] = self._add_resource(self.models[self.table_name], self.schemas_for_many[self.table_name], self.schemas[self.table_name], self.namespaces[self.table_name])
         api.add_namespace(self.namespaces[self.table_name])
         self.forms[self.table_name] = self._add_form(table_schema)
 
@@ -88,11 +88,11 @@ class AnyTable(Base):
     def _add_namespace(self, ns):
         return Namespace(ns)
 
-    def _add_resource(self, model, schema, ns):
+    def _add_resource(self, model, schema_for_many, schema, ns):
             @ns.route('/')
             class MetaResources(Resource):
                 def get(self):
-                    return schema.jsonify(model.query.all())
+                    return schema_for_many.jsonify(model.query.all())
 
                 def post(self):
                     record_json = request.get_json()

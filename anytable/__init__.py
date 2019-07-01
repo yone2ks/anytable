@@ -10,7 +10,7 @@ import anytable as app_root
 from .extensions import db, bootstrap, security, api, ma
 from .user.models import User, Role
 from .base.routes import base_bp
-from .apis.routes import api_bp, anytable_ns
+from .apis.routes import anytable_ns
 from .anytable.routes import anytable_bp
 from .anytable.models import AnyTable
 
@@ -28,7 +28,6 @@ api.init_app(app)
 ma.init_app(app)
 
 app.register_blueprint(base_bp)
-app.register_blueprint(api_bp)
 app.register_blueprint(anytable_bp)
 
 api.add_namespace(anytable_ns)

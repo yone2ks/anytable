@@ -5,7 +5,7 @@ from anytable.anytable.models import AnyTable
 from anytable.extensions import ma, api, db
 from anytable.blueprints import bp_factory
 
-api_bp = bp_factory('api')
+anytable_ns = Namespace('anytable/api/anytables')
 
 class AnyTableSchema(ma.ModelSchema):
     class Meta:
@@ -14,9 +14,7 @@ class AnyTableSchema(ma.ModelSchema):
 anytables_schema = AnyTableSchema(many=True)
 anytable_schema = AnyTableSchema()
 
-anytable_ns = Namespace('anytables')
 
-@api_bp.route('')
 @anytable_ns.route('/')
 class AnyTablesResource(Resource):
     def get(self):
@@ -39,7 +37,7 @@ class AnyTableResource(Resource):
 
 
     def put(self, id):
-        return ""
+        return "There isn't update function"
 
     def delete(self, id):
         anytable = AnyTable.query.get(id)
