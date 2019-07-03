@@ -101,6 +101,14 @@ class AnyTable(Base):
                     db.session.commit()
                     return "add record"
 
+            @ns.route('/filter')
+            class MetaResourcesFilter(Resource):
+                def get(self):
+                    field = request.args.get('field')
+                    filter_str = request.args.get('filter_str')
+                    results = model.query.filter(getattr(model, field).contains(filter_str)).all()
+                    return schema_for_many.jsonify(results)
+
             @ns.route('/<int:id>')
             class MetaResource(Resource):
                 def get(self, id):

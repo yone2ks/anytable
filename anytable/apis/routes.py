@@ -30,11 +30,18 @@ class AnyTablesResource(Resource):
         db.session.commit()
         return "add table_schema"
 
+@anytable_ns.route('/filter')
+class AnyTablesResourceFilter(Resource):
+    def get(self):
+        field = request.args.get('field')
+        filter_str = request.args.get('filter_str')
+        anytables = AnyTable.query.filter(getattr(AnyTable, field).contains(filter_str)).all()
+        return anytables_schema.jsonify(anytables)
+
 @anytable_ns.route('/<int:id>')
 class AnyTableResource(Resource):
     def get(self, id):
         return anytable_schema.jsonify(AnyTable.query.get(id))
-
 
     def put(self, id):
         return "There isn't update function"
