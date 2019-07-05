@@ -1,12 +1,9 @@
 {% extends "base_template.html" %}
 
 {% block title %}Anytable{% endblock title %}
-{% block stylesheet %}
-{{ super() }}
-{% endblock stylesheet %}
 
 {% block sidebar_nav %}
-{% for anytable in anytables.items %}
+{% for anytable in anytables %}
 <li class="nav-item">
     <a class="nav-link active" href="/anytable/{{ anytable.table_name }}">
         {{ anytable.table_name }}
@@ -15,13 +12,30 @@
 {% endfor %}
 {% endblock sidebar_nav %}
 
+{% block stylesheet %}
+{{ super() }}
+{% endblock stylesheet %}
+
+{% block javascript %}
+{{ super() }}
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="{{ url_for('base.static', filename='js/DataTablesBS4.js' )}}"></script>
+
+<script>
+ $(document).ready(function() {
+     $('#anytable_index').DataTable();
+ } );
+</script>
+{% endblock javascript %}
+
 {% block main %}
     <div class="card">
         <div class="card-header">
             Anytables
         </div>
         <div class="card-body">
-    <table class="table table-responsive-sm table-hover table-outline table-striped table-bordered mb-0">
+    <table id="anytable_index" class="table table-responsive-sm table-hover table-outline table-striped table-bordered mt-3 mb-3">
         <thead>
             <tr>
                 <th>ID</th>
@@ -31,7 +45,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for anytable in anytables.items %}
+            {% for anytable in anytables %}
             <tr>
                 <td>{{ anytable.id }}</td>
                 <td>{{ anytable.table_name }}</td>
@@ -47,41 +61,6 @@
             {% endfor %}
         </tbody>
     </table>
-    <ul class="pagination">
-        {% if anytables.has_prev %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('anytable.index', page=anytables.prev_num) }}">Prev</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="{{ url_for('anytable.index', page=anytables.prev_num) }}">Prev</a>
-        </li>
-        {% endif %}
-        {% for page in anytables.iter_pages() %}
-        {% if page %}
-        {% if page == anytables.page %}
-        <li class="page-item active">
-            <a class="page-link" href="{{ url_for('anytable.index', page=page) }}{{ fragment }}">{{ page }}</a>
-        </li>
-        {% else %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('anytable.index', page=page) }}{{ fragment }}">{{ page }}</a>
-        </li>
-        {% endif %}
-        {% else %}
-        <li class="page-item disabled">&hellip;</li>
-        {% endif %}
-        {% endfor %}
-        {% if anytables.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="{{ url_for('anytable.index', page=anytables.next_num) }}">Next</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" href="{{ url_for('anytable.index', page=anytables.next_num) }}">Next</a>
-        </li>
-        {% endif %}
-    </ul>
         </div>
         <div class="card-footer">
             <button class="btn btn-sm btn-primary" type="button" onclick="location.href='{{ url_for('anytable.new') }}'">New Anytable</button>

@@ -12,8 +12,7 @@ anytable_bp = bp_factory('anytable')
 
 @anytable_bp.route('')
 def index():
-    page = request.args.get('page', 1, type=int)
-    anytables = AnyTable.query.paginate(page, settings.PER_PAGE)
+    anytables = AnyTable.query.all()
     return render_template('anytable/index.html', anytables=anytables)
 
 @anytable_bp.route('/<int:id>')
