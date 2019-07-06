@@ -68,8 +68,9 @@ def cls_create(cls):
 @anytable_bp.route('/<string:cls>/<int:id>')
 def cls_show(cls, id):
     record = AnyTable.models[cls].query.get(id)
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
     anytables = AnyTable.query.all()
-    return render_template('anytable/common_show.html', record=record, cls=cls, anytables=anytables)
+    return render_template('anytable/common_show.html', record=record, fields=fields, cls=cls, anytables=anytables)
 
 @anytable_bp.route('/<string:cls>/<int:id>/delete')
 def cls_delete(cls, id):
