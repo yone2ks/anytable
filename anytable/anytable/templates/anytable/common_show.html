@@ -22,7 +22,7 @@
             </tr>
             {% for field in fields %}
             <tr>
-                <th>{{ field }}</th>
+                <th>{{ field.capitalize() }}</th>
                 <td>{{ record[field] }}</td>
             </tr>
             {% endfor %}
@@ -36,6 +36,13 @@
             </tr>
         </tbody>
     </table>
+    </div>
+    <div class="card-footer">
+        <div class="btn-toolbar">
+            <div class="btn-group mr-2">
+                <button class="btn btn-sm btn-danger" type="button" onclick="location.href='{{ url_for('anytable.cls_delete', cls=cls, id=record["id"] ) }}'">Delete</button>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock main %}
