@@ -1,0 +1,32 @@
+{% extends "base_template.html" %}
+{% block sidebar_nav %}
+{% for anytable in anytables %}
+<li class="nav-item">
+    <a class="nav-link active" href="/anytable/{{ anytable.table_name }}">
+        {{ anytable.table_name }}
+    </a>
+</li>
+{% endfor %}
+{% endblock sidebar_nav %}
+{% block main %}
+<div class="card">
+    <div class="card-header">
+        New {{ cls }}
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('anytable.cls_update', cls=cls, id=id ) }}" method=post class="form-horizontal " id="anytable_cls_update">
+            {{ form.csrf_token }}
+            {% for field in fields %}
+            <div class="form-group row">
+                {{ form[field].label(class_="col-md-3 col-form-label") }}{{ form[field](class_="form-control col-md-6", placeholder=record[field], value=record[field]) }}
+            </div>
+            {% endfor %}
+
+        </form>
+    </div>
+    <div class="card-footer">
+        {{ form.submit(class_="btn btn-sm btn-primary", form="anytable_cls_update") }}
+        {{ form.reset(type="reset", class_="btn btn-sm btn-danger", form="anytable_cls_update") }}
+    </div>
+</div>
+{% endblock main %}

@@ -72,6 +72,24 @@ def cls_show(cls, id):
     anytables = AnyTable.query.all()
     return render_template('anytable/common_show.html', record=record, fields=fields, cls=cls, anytables=anytables)
 
+@anytable_bp.route('/<string:cls>/<int:id>/edit')
+def cls_edit(cls, id):
+    form = AnyTable.forms[cls]()
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
+    anytables = AnyTable.query.all()
+    record = AnyTable.models[cls].query.get(id)
+    return render_template('anytable/common_edit.html', form=form, fields=fields, cls=cls, anytables=anytables, record=record, id=id)
+
+
+@anytable_bp.route('/<string:cls>/<int:id>/update', methods=['POST'])
+def cls_update(cls, id):
+    record = AnyTable.models[cls].query.get(id)
+    fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
+    for field in fields:
+        setattr(record, field, request.form[field])
+    db.session.commit()
+    return redirect(url_for('anytable.cls_index', cls=cls))
+
 @anytable_bp.route('/<string:cls>/<int:id>/delete')
 def cls_delete(cls, id):
     record = AnyTable.models[cls].query.get(id)
