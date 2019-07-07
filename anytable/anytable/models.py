@@ -114,6 +114,14 @@ class AnyTable(Base):
                 def get(self, id):
                     return schema.jsonify(model.query.get(id))
 
+                def put(self, id):
+                    record = model.query.get(id)
+                    record_json = request.get_json()
+                    for field, value in record_json.items():
+                        setattr(record, field, value)
+                    db.session.commit()
+                    return "add record"
+
                 def delete(self, id):
                     record = model.query.get(id)
                     db.session.delete(record)
