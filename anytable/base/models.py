@@ -12,4 +12,8 @@ class Base(db.Model):
     def __repr__(self):
         return "<id={id} created_at={created_at} updated_at={updated_at}".format(id=self.id, created_at=self.created_at, updated_at=self.updated_at)
 
+    def update(self):
+        self.updated_at = datetime.now()
+        db.session.commit()
+
 

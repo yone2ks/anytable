@@ -87,7 +87,7 @@ def cls_update(cls, id):
     fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
     for field in fields:
         setattr(record, field, request.form[field])
-    db.session.commit()
+    record.update()
     return redirect(url_for('anytable.cls_index', cls=cls))
 
 @anytable_bp.route('/<string:cls>/<int:id>/delete')
