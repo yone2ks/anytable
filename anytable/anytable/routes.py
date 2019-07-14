@@ -1,4 +1,4 @@
-import json
+import json, datetime
 from flask import jsonify, request, current_app, redirect, url_for, render_template, flash, session
 from flask_restplus import Resource, Namespace
 from dynaconf import settings
@@ -59,7 +59,15 @@ def cls_new(cls):
 @anytable_bp.route('/<string:cls>/create', methods=['POST'])
 def cls_create(cls):
     fields = list(map(lambda field: field["name"], AnyTable.table_schemas[cls]["fields"]))
-    params = dict((field, request.form[field]) for field in fields)
+    types = list(map(lambda field: field["type"], AnyTable.table_schemas[cls]["fields"]))
+    params = {}
+    for index, field in enumerate(fields):
+        print(types[index])
+        if types[index] == 'date':
+            params[field] = datetime.datetime.strptime(request.form[field], "%Y-%m-%d")
+        else:
+            params[field] = request.form[field]
+    # params = dict((field, request.form[field]) for field in fields)
     record = AnyTable.models[cls](**params)
     db.session.add(record)
     db.session.commit()

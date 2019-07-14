@@ -20,7 +20,7 @@
          if(field_num < max_fields_limit){ //check conditions
              field_num++; //counter increment
              $('#field_num').val(field_num);
-             var $field_html = '<div class="form-group row"><label class="col-md-3 col-form-label">Field' + field_num + ':</label><input type="text" name="field' + field_num + '_name" class="form-control col-md-2"><select name="field' + field_num + '_type" class="form-control col-md-2"><option value="integer">Integer</option><option value="float">Float</option><option value="string">String</option></select><div class="form-check"><input type="checkbox" class="form-check-input" name="field' + field_num + '_nullable" value="1"><label class="form-check-label" for="nullable">Nullable</label></div><div class="form-check"><input type="checkbox" class="form-check-input" name="field' + field_num + '_unique" value="1"><label class="form-check-label" for="unique">Unique</label></div><a href="#" class="btn btn-sm btn-danger remove_field">Remove</a></div>'
+             var $field_html = '<div class="form-group row"><label class="col-md-3 col-form-label">Field' + field_num + ':</label><input type="text" name="field' + field_num + '_name" class="form-control col-md-2"><select name="field' + field_num + '_type" class="form-control col-md-2"><option value="integer">Integer</option><option value="float">Float</option><option value="boolean">Boolean</option><option value="string">String</option><option value="date">Date</option><option value="datetime">DateTime</option></select><div class="form-check"><input type="checkbox" class="form-check-input" name="field' + field_num + '_nullable" value="1"><label class="form-check-label" for="nullable">Nullable</label></div><div class="form-check"><input type="checkbox" class="form-check-input" name="field' + field_num + '_unique" value="1"><label class="form-check-label" for="unique">Unique</label></div><a href="#" class="btn btn-sm btn-danger remove_field">Remove</a></div>'
              $('.input_fields_container_part').append($field_html); //add input field
          }
      });
@@ -54,6 +54,9 @@
                         <option value="integer">Integer</option>
                         <option value="float">Float</option>
                         <option value="string">String</option>
+                        <option value="boolean">Boolean</option>
+                        <option value="date">Date</option>
+                        <option value="datetime">DateTime</option>
                     </select>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="field1_nullable" value="1">

@@ -1,11 +1,12 @@
 import json
 from distutils.util import strtobool
 from flask import jsonify, request, current_app
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime, Date
 from sqlalchemy.orm import relationship, backref
 from flask_restplus import Resource, Namespace
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms.fields.html5 import IntegerField, DateField, DateTimeField
+from wtforms import FloatField, StringField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from wtforms_alchemy import Unique
 from inflector import Inflector
@@ -29,7 +30,19 @@ class AnyTable(Base):
     TYPE_DICT = {
         "integer": Integer,
         "float": Float,
-        "string": String
+        "string": String,
+        "boolean": Boolean,
+        "date": Date,
+        "datetime": DateTime
+    }
+
+    FIELD_DICT = {
+        "integer": IntegerField,
+        "float": FloatField,
+        "string": StringField,
+        "boolean": BooleanField,
+        "date": DateField,
+        "datetime": DateTimeField
     }
 
     def __repr__(self):
@@ -68,9 +81,10 @@ class AnyTable(Base):
                 validators.append(Unique(getattr(self.models[table_schema['table_name']], field['name'])))
             if field['nullable'] == "true":
                 validators.append(DataRequired())
-            dic[field['name']] = StringField(field['name'])
+            dic[field['name']] = self.FIELD_DICT[field['type']](field['name'])
         dic['submit'] = SubmitField('Add ' + table_schema['table_name'])
         dic['reset'] = SubmitField('Reset')
+        print(dic)
         return dic
 
     def _add_schema(self, cls):
