@@ -1,4 +1,5 @@
 import json, datetime
+from distutils.util import strtobool
 from flask import jsonify, request, current_app, redirect, url_for, render_template, flash, session
 from flask_restplus import Resource, Namespace
 from dynaconf import settings
@@ -65,9 +66,10 @@ def cls_create(cls):
         print(types[index])
         if types[index] == 'date':
             params[field] = datetime.datetime.strptime(request.form[field], "%Y-%m-%d")
+        elif types[index] == 'boolean':
+            params[field] = strtobool(request.form[field])
         else:
             params[field] = request.form[field]
-    # params = dict((field, request.form[field]) for field in fields)
     record = AnyTable.models[cls](**params)
     db.session.add(record)
     db.session.commit()
